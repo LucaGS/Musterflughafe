@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"os"
 	Anlagen_Package "v1/Anlagen"
 
 	"fmt"
@@ -55,6 +57,19 @@ func main() {
 	}
 	for _, v := range AlleDaten {
 		fmt.Println(v)
+	}
+	datei, err := os.Create("data.json")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer datei.Close()
+	encoder := json.NewEncoder(datei)
+	err = encoder.Encode(AlleDaten)
+	encoder.SetIndent("", "    ")
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
 	fmt.Printf("a total of %v rows", len(AlleDaten))
 }
